@@ -9,101 +9,48 @@ interface PeriodSelectorProps {
 }
 
 export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selectedDate, onDateChange }) => {
-  const handlePrev = () => {
+  const go = (delta: number) => {
     const d = new Date(selectedDate);
-    d.setMonth(d.getMonth() - 1);
+    d.setMonth(d.getMonth() + delta);
     onDateChange(d);
   };
-
-  const handleNext = () => {
-    const d = new Date(selectedDate);
-    d.setMonth(d.getMonth() + 1);
-    onDateChange(d);
-  };
-
-  const month = MONTHS[selectedDate.getMonth()];
-  const year = selectedDate.getFullYear();
 
   return (
-    <div
-      className="neon-panel hud-corners flex items-center justify-between px-4 py-3"
-      style={{ borderRadius: 0 }}
-    >
-      <span className="hud-tr" />
-      <span className="hud-bl" />
-
-      {/* Left side label */}
-      <div className="flex items-center gap-2">
-        <span className="text-[9px] font-black tracking-[0.35em] uppercase" style={{ color: '#0D4F6B' }}>
-          PERÍODO
-        </span>
-        <span style={{ color: '#0D4F6B' }}>//</span>
-        <span className="text-[9px] font-black" style={{ color: '#00FFD4' }}>
-          ACTIVO
-        </span>
-      </div>
-
-      {/* Center navigation */}
-      <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
         <button
-          onClick={handlePrev}
-          className="p-1.5 transition-all"
-          style={{ color: '#0D4F6B', border: '1px solid #0D4F6B', borderRadius: 0 }}
-          onMouseEnter={e => {
-            e.currentTarget.style.color = '#00FFD4';
-            e.currentTarget.style.borderColor = '#00FFD4';
-            e.currentTarget.style.boxShadow = '0 0 12px rgba(0,255,212,0.3)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.color = '#0D4F6B';
-            e.currentTarget.style.borderColor = '#0D4F6B';
-            e.currentTarget.style.boxShadow = 'none';
-          }}
+          onClick={() => go(-1)}
+          className="p-1.5 rounded-md transition-colors"
+          style={{ color: '#72727A', border: '1px solid #26262C' }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#E4E4E8'; e.currentTarget.style.borderColor = '#3E3E46'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#72727A'; e.currentTarget.style.borderColor = '#26262C'; }}
         >
-          <ChevronLeft size={16} strokeWidth={2.5} />
+          <ChevronLeft size={14} />
         </button>
 
-        <div className="flex items-baseline gap-3">
-          <span
-            className="text-2xl font-black tracking-[0.05em] uppercase"
-            style={{ color: '#00FFD4', textShadow: '0 0 15px rgba(0,255,212,0.5)', minWidth: '140px', textAlign: 'center' }}
-          >
-            {month}
+        <div className="flex items-baseline gap-2">
+          <span className="text-lg font-bold" style={{ color: '#E4E4E8' }}>
+            {MONTHS[selectedDate.getMonth()]}
           </span>
-          <span
-            className="text-base font-black tracking-widest"
-            style={{ color: '#0D4F6B' }}
-          >
-            {year}
+          <span className="text-sm font-medium" style={{ color: '#3E3E46' }}>
+            {selectedDate.getFullYear()}
           </span>
         </div>
 
         <button
-          onClick={handleNext}
-          className="p-1.5 transition-all"
-          style={{ color: '#0D4F6B', border: '1px solid #0D4F6B', borderRadius: 0 }}
-          onMouseEnter={e => {
-            e.currentTarget.style.color = '#00FFD4';
-            e.currentTarget.style.borderColor = '#00FFD4';
-            e.currentTarget.style.boxShadow = '0 0 12px rgba(0,255,212,0.3)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.color = '#0D4F6B';
-            e.currentTarget.style.borderColor = '#0D4F6B';
-            e.currentTarget.style.boxShadow = 'none';
-          }}
+          onClick={() => go(1)}
+          className="p-1.5 rounded-md transition-colors"
+          style={{ color: '#72727A', border: '1px solid #26262C' }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#E4E4E8'; e.currentTarget.style.borderColor = '#3E3E46'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#72727A'; e.currentTarget.style.borderColor = '#26262C'; }}
         >
-          <ChevronRight size={16} strokeWidth={2.5} />
+          <ChevronRight size={14} />
         </button>
       </div>
 
-      {/* Right side: date stamp */}
-      <div
-        className="text-[9px] font-black tracking-[0.2em] uppercase"
-        style={{ color: '#0D4F6B' }}
-      >
-        {String(selectedDate.getMonth() + 1).padStart(2,'0')}/{year}
-      </div>
+      <span className="text-xs font-mono" style={{ color: '#3E3E46' }}>
+        {String(selectedDate.getMonth() + 1).padStart(2, '0')}/{selectedDate.getFullYear()}
+      </span>
     </div>
   );
 };

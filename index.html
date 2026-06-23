@@ -20,59 +20,10 @@
               sans: ['JetBrains Mono', 'Courier New', 'monospace'],
             },
             colors: {
-              neon: {
-                DEFAULT: '#00FFD4',
-                dim: '#00A888',
-                dark: '#004D40',
-              },
-              cyber: {
-                900: '#000810',
-                800: '#010D1E',
-                700: '#021528',
-                600: '#04233D',
-                500: '#0D4F6B',
-                400: '#1A7A9C',
-              },
-              zinc: {
-                850: '#1c1c1f',
-                900: '#18181b',
-                950: '#09090b',
-              }
-            },
-            animation: {
-              'scan': 'scan 4s linear infinite',
-              'flicker': 'flicker 8s linear infinite',
-              'neon-pulse': 'neon-pulse 2s ease-in-out infinite',
-              'glitch': 'glitch 0.3s linear',
-              'float': 'float 6s ease-in-out infinite',
-            },
-            keyframes: {
-              scan: {
-                '0%': { transform: 'translateY(-100%)' },
-                '100%': { transform: 'translateY(100vh)' },
-              },
-              flicker: {
-                '0%, 95%, 100%': { opacity: '1' },
-                '96%': { opacity: '0.8' },
-                '97%': { opacity: '1' },
-                '98%': { opacity: '0.6' },
-                '99%': { opacity: '1' },
-              },
-              'neon-pulse': {
-                '0%, 100%': { boxShadow: '0 0 8px rgba(0,255,212,0.3), 0 0 20px rgba(0,255,212,0.1)' },
-                '50%': { boxShadow: '0 0 20px rgba(0,255,212,0.6), 0 0 40px rgba(0,255,212,0.2)' },
-              },
-              glitch: {
-                '0%, 100%': { transform: 'translate(0)' },
-                '20%': { transform: 'translate(-2px, 1px)' },
-                '40%': { transform: 'translate(2px, -1px)' },
-                '60%': { transform: 'translate(-1px, 2px)' },
-                '80%': { transform: 'translate(1px, -1px)' },
-              },
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-8px)' },
-              }
+              surface: { DEFAULT: '#141416', 2: '#1C1C20' },
+              border:  { DEFAULT: '#26262C', subtle: '#1E1E24' },
+              accent:  { DEFAULT: '#5BA8AD', bg: 'rgba(91,168,173,0.08)' },
+              ink:     { DEFAULT: '#E4E4E8', 2: '#72727A', 3: '#3E3E46' },
             }
           }
         }
@@ -101,7 +52,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-cyber-900 text-cyan-100 antialiased">
+  <body class="antialiased" style="background:#0C0C0E;color:#E4E4E8">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
