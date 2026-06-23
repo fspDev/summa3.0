@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SUMMA | Freelance Admin</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSIjMDAwODEwIi8+PHRleHQgeD0iNTAiIHk9IjcwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjYwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzAwRkZENCI+UzwvdGV4dD48L3N2Zz4=" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+              sans: ['JetBrains Mono', 'Courier New', 'monospace'],
+            },
+            colors: {
+              neon: {
+                DEFAULT: '#00FFD4',
+                dim: '#00A888',
+                dark: '#004D40',
+              },
+              cyber: {
+                900: '#000810',
+                800: '#010D1E',
+                700: '#021528',
+                600: '#04233D',
+                500: '#0D4F6B',
+                400: '#1A7A9C',
+              },
+              zinc: {
+                850: '#1c1c1f',
+                900: '#18181b',
+                950: '#09090b',
+              }
+            },
+            animation: {
+              'scan': 'scan 4s linear infinite',
+              'flicker': 'flicker 8s linear infinite',
+              'neon-pulse': 'neon-pulse 2s ease-in-out infinite',
+              'glitch': 'glitch 0.3s linear',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              scan: {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(100vh)' },
+              },
+              flicker: {
+                '0%, 95%, 100%': { opacity: '1' },
+                '96%': { opacity: '0.8' },
+                '97%': { opacity: '1' },
+                '98%': { opacity: '0.6' },
+                '99%': { opacity: '1' },
+              },
+              'neon-pulse': {
+                '0%, 100%': { boxShadow: '0 0 8px rgba(0,255,212,0.3), 0 0 20px rgba(0,255,212,0.1)' },
+                '50%': { boxShadow: '0 0 20px rgba(0,255,212,0.6), 0 0 40px rgba(0,255,212,0.2)' },
+              },
+              glitch: {
+                '0%, 100%': { transform: 'translate(0)' },
+                '20%': { transform: 'translate(-2px, 1px)' },
+                '40%': { transform: 'translate(2px, -1px)' },
+                '60%': { transform: 'translate(-1px, 2px)' },
+                '80%': { transform: 'translate(1px, -1px)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-8px)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "three": "https://esm.sh/three@0.177.0",
+    "three/": "https://esm.sh/three@0.177.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
+    "html2canvas": "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm",
+    "jspdf": "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm",
+    "jspdf-autotable": "https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/+esm",
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.6.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-cyber-900 text-cyan-100 antialiased">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
