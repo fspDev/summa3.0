@@ -5,14 +5,12 @@ import { MONTHS, formatCurrency } from './constants';
 import { PeriodSelector } from './components/PeriodSelector';
 import { SettingsModal } from './components/SettingsModal';
 import { SummaryPanel } from './components/SummaryPanel';
-import { VacationModal } from './components/VacationModal';
-import { ProductivityInsights } from './components/ProductivityInsights';
 import { Login } from './components/Login';
 import { auth } from './firebase';
 import { onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
 import {
-  Settings as SettingsIcon, Loader2, Palmtree, LogOut, Plus, Trash2,
-  Tag, Check, Clock, Search, List, LayoutGrid, BrainCircuit,
+  Settings as SettingsIcon, Loader2, LogOut, Plus, Trash2,
+  Tag, Check, Clock, Search, List, LayoutGrid,
   ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { db } from './db';
@@ -48,9 +46,7 @@ function App() {
   const [periodStates, setPeriodStates] = useState<Record<string, PeriodState>>({});
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isVacationModalOpen, setIsVacationModalOpen] = useState(false);
   const [dayModal, setDayModal] = useState<string | null>(null);
-  const [showInsights, setShowInsights] = useState(false);
   const [filterTerm, setFilterTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState<'all' | 'Control X' | 'Franco'>('all');
   const [groupMode, setGroupMode] = useState<'none' | 'date' | 'code' | 'category'>('none');
@@ -149,12 +145,6 @@ function App() {
 
   const getEntry = (ds: string): WorkDay =>
     entries[ds] || { date: ds, hours: 0, isAbsent: false, isHoliday: false, isVacation: false, note: '', tasks: [] };
-
-  const monthEntries = useMemo(() =>
-    (Object.values(entries) as WorkDay[]).filter(e => {
-      const d = new Date(e.date + 'T12:00:00');
-      return d.getMonth() === selectedDate.getMonth() && d.getFullYear() === selectedDate.getFullYear();
-    }), [entries, selectedDate]);
 
   const tasks = useMemo(() => {
     let list: { date: string; task: DayTask }[] = [];
@@ -382,26 +372,24 @@ function App() {
         </div>
 
         <div className="flex items-center gap-1">
-          {[
-            { icon: <BrainCircuit size={14} />, label: 'IA', action: () => setShowInsights(!showInsights), active: showInsights },
-            { icon: <Palmtree size={14} />, label: '', action: () => setIsVacationModalOpen(true) },
-            { icon: <SettingsIcon size={14} />, label: '', action: () => setIsSettingsOpen(true) },
-            { icon: <LogOut size={14} />, label: '', action: () => signOut(auth), danger: true },
-          ].map((btn, i) => (
-            <button
-              key={i} onClick={btn.action}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors"
-              style={{
-                color: btn.danger ? S.red : btn.active ? S.accent : S.text2,
-                background: btn.active ? 'rgba(91,168,173,0.1)' : 'transparent',
-                border: `1px solid ${btn.active ? 'rgba(91,168,173,0.3)' : 'transparent'}`,
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = S.s2; e.currentTarget.style.borderColor = S.border; }}
-              onMouseLeave={e => { e.currentTarget.style.background = btn.active ? 'rgba(91,168,173,0.1)' : 'transparent'; e.currentTarget.style.borderColor = btn.active ? 'rgba(91,168,173,0.3)' : 'transparent'; }}
-            >
-              {btn.icon}{btn.label}
-            </button>
-          ))}
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="p-2 rounded-md transition-colors"
+            style={{ color: S.text3 }}
+            onMouseEnter={e => { e.currentTarget.style.color = S.text; e.currentTarget.style.background = S.s2; }}
+            onMouseLeave={e => { e.currentTarget.style.color = S.text3; e.currentTarget.style.background = 'transparent'; }}
+          >
+            <SettingsIcon size={15} />
+          </button>
+          <button
+            onClick={() => signOut(auth)}
+            className="p-2 rounded-md transition-colors"
+            style={{ color: S.text3 }}
+            onMouseEnter={e => { e.currentTarget.style.color = S.red; e.currentTarget.style.background = S.s2; }}
+            onMouseLeave={e => { e.currentTarget.style.color = S.text3; e.currentTarget.style.background = 'transparent'; }}
+          >
+            <LogOut size={15} />
+          </button>
         </div>
       </header>
 
@@ -418,14 +406,6 @@ function App() {
             }}
           />
         </div>
-
-        {/* Insights */}
-        {showInsights && (
-          <section>
-            <p className="section-label mb-3">Análisis de productividad</p>
-            <ProductivityInsights entries={monthEntries} targetHours={settings.dailyTargetHours} currentHourlyRate={rate} />
-          </section>
-        )}
 
         {/* Calendar */}
         <section>
@@ -729,7 +709,6 @@ function App() {
           setSettings(us); await db.saveSettings(us); setPeriodStates(nps); await db.savePeriodState(cs);
         }}
       />
-      <VacationModal isOpen={isVacationModalOpen} onClose={() => setIsVacationModalOpen(false)} onSave={async () => {}} />
     </div>
   );
 }
