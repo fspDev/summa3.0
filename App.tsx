@@ -46,6 +46,7 @@ function App() {
   const [periodStates, setPeriodStates] = useState<Record<string, PeriodState>>({});
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [dayModal, setDayModal] = useState<string | null>(null);
   const [filterTerm, setFilterTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState<'all' | 'Control X' | 'Franco'>('all');
@@ -245,7 +246,13 @@ function App() {
     const hours = list.reduce((s, t) => { const c = getCfg(t.category, pid); return s + (c.type === 'hourly' ? t.minutes / 60 : 0); }, 0);
     const ue: WorkDay = { ...entry, tasks: list, hours: Math.round(hours * 100) / 100 };
     setEntries(p => ({ ...p, [ds]: ue }));
-    await db.saveEntry(ue);
+    try {
+      await db.saveEntry(ue);
+      setSaveError(null);
+    } catch (e: any) {
+      console.error('saveEntry failed:', e);
+      setSaveError(e?.code === 'permission-denied' ? 'Sin permisos de escritura en Firestore.' : 'Error al guardar. Verificá la conexión.');
+    }
   };
 
   const addTask = () => {
@@ -392,6 +399,14 @@ function App() {
           </button>
         </div>
       </header>
+
+      {saveError && (
+        <div className="sticky top-14 z-20 px-6 py-2 text-xs font-medium flex items-center justify-between"
+          style={{ background: 'rgba(248,113,113,0.1)', borderBottom: '1px solid rgba(248,113,113,0.25)', color: '#F87171' }}>
+          <span>⚠ {saveError}</span>
+          <button onClick={() => setSaveError(null)} style={{ color: '#F87171', opacity: 0.6 }}>✕</button>
+        </div>
+      )}
 
       <main className="max-w-5xl mx-auto px-4 py-6 space-y-8">
 
