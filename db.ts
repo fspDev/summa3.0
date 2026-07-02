@@ -9,12 +9,24 @@ import {
   writeBatch 
 } from 'firebase/firestore';
 
-// Helper to get current user ID or throw error
 const getUserId = () => {
   const user = auth.currentUser;
   if (!user) throw new Error("User not authenticated");
   return user.uid;
 };
+
+// Firestore rejects undefined values — strip them recursively
+function stripUndefined<T>(obj: T): T {
+  if (Array.isArray(obj)) return obj.map(stripUndefined) as unknown as T;
+  if (obj !== null && typeof obj === 'object') {
+    return Object.fromEntries(
+      Object.entries(obj)
+        .filter(([, v]) => v !== undefined)
+        .map(([k, v]) => [k, stripUndefined(v)])
+    ) as T;
+  }
+  return obj;
+}
 
 export const db = {
   // Not needed for Firestore per se, but kept for interface compatibility
@@ -43,7 +55,7 @@ export const db = {
     const uid = getUserId();
     const entryRef = doc(dbFirestore, 'users', uid, 'entries', entry.date);
     // Merge true allows updating fields without overwriting the whole doc if schema changes later
-    await setDoc(entryRef, entry, { merge: true });
+    await setDoc(entryRef, stripUndefined(entry), { merge: true });
   },
 
   getSettings: async (): Promise<AppSettings | null> => {
